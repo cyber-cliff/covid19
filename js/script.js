@@ -1,3 +1,19 @@
+var request3 = new XMLHttpRequest();
+request3.open('GET', 'https://coronavirus-tracker-api.herokuapp.com/all');
+request3.setRequestHeader('Accept', 'application/json');
+request3.onload = function () {
+    var data = JSON.parse(this.response)
+    if (request3.status >= 200 && request3.status < 400) {
+        document.getElementById('confirmedN').innerHTML = data.latest.confirmed
+        document.getElementById('infectedN').innerHTML = data.latest.confirmed - data.latest.deaths - data.latest.recovered
+        document.getElementById('deathsN').innerHTML = data.latest.deaths
+        document.getElementById('recoveredN').innerHTML = data.latest.recovered
+    } else {
+        console.log('error')
+    }
+}
+request3.send();
+
 var request = new XMLHttpRequest();
 request.open('GET', 'https://coronavirus-tracker-api.herokuapp.com/all');
 request.setRequestHeader('Accept', 'application/json');
@@ -1781,6 +1797,7 @@ function drawChartTimeseries() {
         [],
         [],
         [],
+        [],
         []
     ]
     var count = 0
@@ -1809,6 +1826,8 @@ function drawChartTimeseries() {
                 tempDeaths[key] = temp2Deaths[key];
                 tempRecovered[key] = temp2Recovered[key];
             });
+            var antD = 0
+            var count2 = 1
             for (var element in tempConfirmed) {
                 count++
                 if (values[0][element] == null)
@@ -1819,6 +1838,8 @@ function drawChartTimeseries() {
                     values[2][element] = 0
                 if (values[3][element] == null)
                     values[3][element] = 0
+                if (values[4][element] == null)
+                    values[4][element] = 0
                 if (tempConfirmed[element])
                     values[0][element] += parseInt(tempConfirmed[element])
                 if (tempDeaths[element])
@@ -1827,6 +1848,14 @@ function drawChartTimeseries() {
                     values[3][element] += parseInt(tempRecovered[element])
                 if (tempRecovered[element] && tempConfirmed[element] && tempDeaths[element])
                     values[1][element] += parseInt(tempConfirmed[element]) - parseInt(tempRecovered[element]) - parseInt(tempDeaths[element])
+                if (antD == 0) {
+                    count2 = 1
+                    values[4][element] = 0
+                } else {
+                    values[4][element] = 1.7926 * Math.pow(1.3752, count2)
+                }
+                antD = values[1][element]
+                count2++
             }
         }
     }
@@ -1949,6 +1978,21 @@ function drawChartTimeseries() {
                     pointBorderWidth: 2,
                     data: values[3],
                 }
+                //, {
+                //     label: "Forecast",
+                //     lineTension: 0.3,
+                //     backgroundColor: "rgba(78, 115, 223, 0.05)",
+                //     borderColor: "#6f42c1",
+                //     pointRadius: 3,
+                //     pointBackgroundColor: "#6f42c1",
+                //     pointBorderColor: "#6f42c1",
+                //     pointHoverRadius: 3,
+                //     pointHoverBackgroundColor: "#6f42c1",
+                //     pointHoverBorderColor: "#6f42c1",
+                //     pointHitRadius: 10,
+                //     pointBorderWidth: 2,
+                //     data: values[4],
+                // }
             ],
         },
         options: {
@@ -2031,19 +2075,3 @@ request2.onload = function () {
     }
 }
 request2.send();
-
-var request3 = new XMLHttpRequest();
-request3.open('GET', 'https://wuhan-coronavirus-api.laeyoung.endpoint.ainize.ai/jhu-edu/brief');
-request3.setRequestHeader('Accept', 'application/json');
-request3.onload = function () {
-    var data = JSON.parse(this.response)
-    if (request3.status >= 200 && request3.status < 400) {
-        document.getElementById('confirmedN').innerHTML = data.confirmed
-        document.getElementById('infectedN').innerHTML = data.confirmed - data.deaths - data.recovered
-        document.getElementById('deathsN').innerHTML = data.deaths
-        document.getElementById('recoveredN').innerHTML = data.recovered
-    } else {
-        console.log('error')
-    }
-}
-request3.send();
