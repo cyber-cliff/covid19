@@ -41,12 +41,8 @@ function b64EncodeUnicode(str) {
         }));
 }
 
-$.ajax(settings).done(function (response) {
-    // console.log(response);
-});
 
-
-var settings2 = {
+var settings = {
     "async": true,
     "crossDomain": true,
     "url": "https://coronavirus-monitor.p.rapidapi.com/coronavirus/worldstat.php",
@@ -57,7 +53,7 @@ var settings2 = {
     }
 }
 
-$.ajax(settings2).done(function (data) {
+$.ajax(settings).done(function (data) {
     data = $.parseJSON(data);
     data.total_cases = data.total_cases.replace(',', '')
     data.total_deaths = data.total_deaths.replace(',', '')
@@ -2177,15 +2173,18 @@ function drawChartTimeseries() {
     });
     document.getElementById('myAreaChart').append(ctx)
 }
-var request2 = new XMLHttpRequest();
-request2.open('GET', 'https://coronavirus-tracker-api.herokuapp.com/all');
-request2.setRequestHeader('Accept', 'application/json');
-request2.onload = function () {
-    if (request2.status >= 200 && request2.status < 400) {
-        data = JSON.parse(this.response)
-        drawChartTimeseries()
-    } else {
-        console.log('error')
+
+var settings = {
+    "async": true,
+    "crossDomain": true,
+    "url": "https://coronavirus-tracker-api.herokuapp.com/all",
+    "method": "GET",
+    "headers": {
+        "Accept": "application/json"
     }
 }
-request2.send();
+
+$.ajax(settings).done(function (response) {
+    data = response
+    drawChartTimeseries()
+});
