@@ -1,3 +1,51 @@
+var settings = {
+    "async": true,
+    "crossDomain": true,
+    "url": "https://coronavirus-monitor.p.rapidapi.com/coronavirus/masks.php",
+    "method": "GET",
+    "headers": {
+        "x-rapidapi-host": "coronavirus-monitor.p.rapidapi.com",
+        "x-rapidapi-key": "f87d8b7daemsh99560a3534f1f1ap14d466jsn01568a97fbdf"
+    },
+    "beforeSend": function (xhr) {
+        xhr.overrideMimeType('text/plain; charset=x-user-defined');
+    },
+    "success": function (result, textStatus, jqXHR) {
+        if (result.length < 1) {
+            alert("The thumbnail doesn't exist");
+            $("#infoImg").attr("src", "data:image/png;base64,");
+            return
+        }
+
+        var binary = "";
+        var responseText = jqXHR.responseText;
+        var responseTextLen = responseText.length;
+
+        for (i = 0; i < responseTextLen; i++) {
+            binary += String.fromCharCode(responseText.charCodeAt(i) & 255)
+        }
+        $("#infoImg").attr("src", "data:image/png;base64," + btoa(binary));
+    },
+    "error": function (xhr, textStatus, errorThrown) {
+        alert("Error in getting document " + textStatus);
+    }
+}
+
+function b64EncodeUnicode(str) {
+    // first we use encodeURIComponent to get percent-encoded UTF-8,
+    // then we convert the percent encodings into raw bytes which
+    // can be fed into btoa.
+    return btoa(encodeURIComponent(str).replace(/%([0-9A-F]{2})/g,
+        function toSolidBytes(match, p1) {
+            return String.fromCharCode('0x' + p1);
+        }));
+}
+
+$.ajax(settings).done(function (response) {
+    console.log(response);
+});
+
+
 var settings2 = {
     "async": true,
     "crossDomain": true,
@@ -14,9 +62,9 @@ $.ajax(settings2).done(function (data) {
     data.total_cases = data.total_cases.replace(',', '')
     data.total_deaths = data.total_deaths.replace(',', '')
     data.total_recovered = data.total_recovered.replace(',', '')
-    document.getElementById('confirmedN').innerHTML = data.total_cases
+    document.getElementById('confirmedN').innerHTML = data.total_cases + ' (+' + data.new_cases.replace(',', '') + ')'
     document.getElementById('infectedN').innerHTML = parseInt(data.total_cases) - parseInt(data.total_deaths) - parseInt(data.total_recovered)
-    document.getElementById('deathsN').innerHTML = data.total_deaths
+    document.getElementById('deathsN').innerHTML = data.total_deaths + ' (+' + data.new_deaths.replace(',', '') + ')'
     document.getElementById('recoveredN').innerHTML = data.total_recovered
 });
 
@@ -33,7 +81,7 @@ var settings = {
 
 var dict = new Object()
 $.ajax(settings).done(function (data) {
-    total = [0,0,0,0]
+    total = [0, 0, 0, 0]
     data = $.parseJSON(data);
     for (country in data.countries_stat) {
         dict[data.countries_stat[country].country_name] = [parseInt(data.countries_stat[country].cases.replace(',', '')), parseInt(data.countries_stat[country].serious_critical.replace(',', '')), parseInt(data.countries_stat[country].deaths.replace(',', '')), parseInt(data.countries_stat[country].total_recovered.replace(',', ''))]
