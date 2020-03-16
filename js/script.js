@@ -42,7 +42,7 @@ function b64EncodeUnicode(str) {
 }
 
 $.ajax(settings).done(function (response) {
-    console.log(response);
+    // console.log(response);
 });
 
 
@@ -1161,7 +1161,7 @@ $.ajax(settings).done(function (data) {
         },
         {
             'code': 'CF',
-            'name': 'Central African Rep.'
+            'name': 'Central African Republic'
         },
         {
             'code': 'TD',
@@ -1185,11 +1185,11 @@ $.ajax(settings).done(function (data) {
         },
         {
             'code': 'CD',
-            'name': 'Congo, Dem. Rep.'
+            'name': 'Congo (Kinshasa)'
         },
         {
             'code': 'CG',
-            'name': 'Congo, Rep.'
+            'name': 'Congo (Brazzaville)'
         },
         {
             'code': 'CR',
@@ -1924,9 +1924,28 @@ function drawChartTimeseries() {
         values[2][nowTimeH] = total[2]
         values[3][nowTimeH] = total[3]
     }
+    // console.log(dict)
     for (var element in values) {
         if (document.getElementById('dropdownCountry').value != 'Global') {
-            values[element][nowTimeH] = dict[document.getElementById('dropdownCountry').value][element]
+            if (dict[document.getElementById('dropdownCountry').value] == undefined) {
+                console.log(document.getElementById('dropdownCountry').value)
+                if (document.getElementById('dropdownCountry').value == 'United Arab Emirates')
+                    values[element][nowTimeH] = dict['UAE'][element]
+                else if (document.getElementById('dropdownCountry').value == 'United Kingdom')
+                    values[element][nowTimeH] = dict['UK'][element]
+                else if (document.getElementById('dropdownCountry').value == 'Korea, South')
+                    values[element][nowTimeH] = dict['S. Korea'][element]
+                else if (document.getElementById('dropdownCountry').value == 'Korea, North')
+                    values[element][nowTimeH] = dict['N. Korea'][element]
+                else if (document.getElementById('dropdownCountry').value == 'Taiwan*')
+                    values[element][nowTimeH] = dict['Taiwan'][element]
+                else if (document.getElementById('dropdownCountry').value == 'US')
+                    values[element][nowTimeH] = dict['USA'][element]
+                else if (document.getElementById('dropdownCountry').value == 'Curacao')
+                    values[element][nowTimeH] = dict['Curaçao'][element]
+
+            } else
+                values[element][nowTimeH] = dict[document.getElementById('dropdownCountry').value][element]
         }
         var temp2 = []
         var j = 0
