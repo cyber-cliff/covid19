@@ -84,11 +84,18 @@ $.ajax(settings).done(function (data) {
     total = [0, 0, 0, 0]
     data = $.parseJSON(data);
     for (country in data.countries_stat) {
-        dict[data.countries_stat[country].country_name] = [parseInt(data.countries_stat[country].cases.replace(',', '')), parseInt(data.countries_stat[country].serious_critical.replace(',', '')), parseInt(data.countries_stat[country].deaths.replace(',', '')), parseInt(data.countries_stat[country].total_recovered.replace(',', ''))]
+        dict[data.countries_stat[country].country_name] = [parseInt(data.countries_stat[country].cases.replace(',', '')),
+            parseInt(data.countries_stat[country].serious_critical.replace(',', '')),
+            parseInt(data.countries_stat[country].deaths.replace(',', '')),
+            parseInt(data.countries_stat[country].total_recovered.replace(',', '')),
+            parseInt(data.countries_stat[country].new_cases.replace(',', '')),
+            parseInt(data.countries_stat[country].new_deaths.replace(',', ''))
+        ]
         total[0] += parseInt(data.countries_stat[country].cases.replace(',', ''))
         total[1] += parseInt(data.countries_stat[country].serious_critical.replace(',', ''))
         total[2] += parseInt(data.countries_stat[country].deaths.replace(',', ''))
         total[3] += parseInt(data.countries_stat[country].total_recovered.replace(',', ''))
+        // console.log(dict[data.countries_stat[country].country_name])
     }
     var latlong = {};
     latlong.AD = {
@@ -1928,24 +1935,46 @@ function drawChartTimeseries() {
     for (var element in values) {
         if (document.getElementById('dropdownCountry').value != 'Global') {
             if (dict[document.getElementById('dropdownCountry').value] == undefined) {
-                console.log(document.getElementById('dropdownCountry').value)
+                // console.log(document.getElementById('dropdownCountry').value)
+                var tempCountry = null
                 if (document.getElementById('dropdownCountry').value == 'United Arab Emirates')
-                    values[element][nowTimeH] = dict['UAE'][element]
+                    tempCountry = 'UAE'
                 else if (document.getElementById('dropdownCountry').value == 'United Kingdom')
-                    values[element][nowTimeH] = dict['UK'][element]
+                    tempCountry = 'UK'
                 else if (document.getElementById('dropdownCountry').value == 'Korea, South')
-                    values[element][nowTimeH] = dict['S. Korea'][element]
+                    tempCountry = 'S. Korea'
                 else if (document.getElementById('dropdownCountry').value == 'Korea, North')
-                    values[element][nowTimeH] = dict['N. Korea'][element]
+                    tempCountry = 'N. Korea'
                 else if (document.getElementById('dropdownCountry').value == 'Taiwan*')
-                    values[element][nowTimeH] = dict['Taiwan'][element]
+                    tempCountry = 'Taiwan'
                 else if (document.getElementById('dropdownCountry').value == 'US')
-                    values[element][nowTimeH] = dict['USA'][element]
+                    tempCountry = 'USA'
                 else if (document.getElementById('dropdownCountry').value == 'Curacao')
-                    values[element][nowTimeH] = dict['Curaçao'][element]
-
-            } else
+                    tempCountry = 'Curaçao'
+                if (tempCountry != null) {
+                    values[element][nowTimeH] = dict[tempCountry][element]
+                    document.getElementById('confirmedNCountry').innerHTML = values[0][nowTimeH] + ' (+' + dict[tempCountry][4] + ')'
+                    document.getElementById('infectedNCountry').innerHTML = values[1][nowTimeH]
+                    document.getElementById('deathsNCountry').innerHTML = values[2][nowTimeH] + ' (+' + dict[tempCountry][5] + ')'
+                    document.getElementById('recoveredNCountry').innerHTML = values[3][nowTimeH]
+                } else {
+                    document.getElementById('confirmedNCountry').innerHTML = '-'
+                    document.getElementById('infectedNCountry').innerHTML = '-'
+                    document.getElementById('deathsNCountry').innerHTML = '-'
+                    document.getElementById('recoveredNCountry').innerHTML = '-'
+                }
+            } else {
                 values[element][nowTimeH] = dict[document.getElementById('dropdownCountry').value][element]
+                document.getElementById('confirmedNCountry').innerHTML = values[0][nowTimeH] + ' (+' + dict[document.getElementById('dropdownCountry').value][4] + ')'
+                document.getElementById('infectedNCountry').innerHTML = values[1][nowTimeH]
+                document.getElementById('deathsNCountry').innerHTML = values[2][nowTimeH] + ' (+' + dict[document.getElementById('dropdownCountry').value][5] + ')'
+                document.getElementById('recoveredNCountry').innerHTML = values[3][nowTimeH]
+            }
+        } else {
+            document.getElementById('confirmedNCountry').innerHTML = document.getElementById('confirmedN').innerHTML
+            document.getElementById('infectedNCountry').innerHTML = document.getElementById('infectedN').innerHTML
+            document.getElementById('deathsNCountry').innerHTML = document.getElementById('deathsN').innerHTML
+            document.getElementById('recoveredNCountry').innerHTML = document.getElementById('recoveredN').innerHTML
         }
         var temp2 = []
         var j = 0

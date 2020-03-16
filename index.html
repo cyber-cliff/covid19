@@ -101,6 +101,76 @@
         <!-- Dropdown No Arrow -->
         <div class="card mb-4">
             <div class="card-body">
+                <div class="row">
+                    <div class="col-xl-3 col-md-6 mb-4">
+                        <div class="card border-left-info shadow h-100 py-2">
+                            <div class="card-body">
+                                <div class="row no-gutters align-items-center">
+                                    <div class="col mr-2">
+                                        <div class="text-xs font-weight-bold text-info text-uppercase mb-1">Confirmed
+                                        </div>
+                                        <div class="h5 mb-0 font-weight-bold text-gray-800" id="confirmedNCountry"></div>
+                                    </div>
+                                    <div class="col-auto">
+                                        <i class="fas fa-comments fa-2x text-gray-300"></i>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-xl-3 col-md-6 mb-4">
+                        <div class="card border-left-warning shadow h-100 py-2">
+                            <div class="card-body">
+                                <div class="row no-gutters align-items-center">
+                                    <div class="col mr-2">
+                                        <div class="text-xs font-weight-bold text-warning text-uppercase mb-1">Infected
+                                        </div>
+                                        <div class="h5 mb-0 font-weight-bold text-gray-800" id="infectedNCountry"></div>
+                                    </div>
+                                    <div class="col-auto">
+                                        <i class="fas fa-comments fa-2x text-gray-300"></i>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-xl-3 col-md-6 mb-4">
+                        <div class="card border-left-danger shadow h-100 py-2">
+                            <div class="card-body">
+                                <div class="row no-gutters align-items-center">
+                                    <div class="col mr-2">
+                                        <div class="text-xs font-weight-bold text-danger text-uppercase mb-1">Deaths
+                                        </div>
+                                        <div class="h5 mb-0 font-weight-bold text-gray-800" id="deathsNCountry"></div>
+                                    </div>
+                                    <div class="col-auto">
+                                        <i class="fas fa-comments fa-2x text-gray-300"></i>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-xl-3 col-md-6 mb-4">
+                        <div class="card border-left-success shadow h-100 py-2">
+                            <div class="card-body">
+                                <div class="row no-gutters align-items-center">
+                                    <div class="col mr-2">
+                                        <div class="text-xs font-weight-bold text-success text-uppercase mb-1">Recovered
+                                        </div>
+                                        <div class="h5 mb-0 font-weight-bold text-gray-800" id="recoveredNCountry"></div>
+                                    </div>
+                                    <div class="col-auto">
+                                        <i class="fas fa-comments fa-2x text-gray-300"></i>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
                 <div class="form-group">
                     <label for="dropdownCountry">Select list:</label>
                     <select class="form-control" id="dropdownCountry" onchange="drawChartTimeseries()">
@@ -112,10 +182,10 @@
             </div>
         </div>
         <div class="row">
-            <div class="text-center col-12">
+            <div cclass="text-center col-12">
                 <img id="infoImg">
             </div>
-        </div> 
+        </div>
 
         <!-- Bootstrap core JavaScript
     ================================================== -->
