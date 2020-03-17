@@ -165,7 +165,7 @@ function drawChartTimeseries() {
                     values[element][nowTimeH] = dict[tempCountry][element]
                     document.getElementById('confirmedNCountry').innerHTML = values[0][nowTimeH] + ' (+' + dict[tempCountry][4] + ')'
                     document.getElementById('infectedNCountry').innerHTML = values[1][nowTimeH] + ' (!' + dict[tempCountry][6] + ')'
-                    document.getElementById('deathsNCountry').innerHTML = values[2][nowTimeH] + ' (+' + dict[tempCountry][5] + ')'
+                    document.getElementById('deathsNCountry').ifnnerHTML = values[2][nowTimeH] + ' (+' + dict[tempCountry][5] + ')'
                     document.getElementById('recoveredNCountry').innerHTML = values[3][nowTimeH]
                 } else {
                     document.getElementById('confirmedNCountry').innerHTML = '-'
@@ -2116,7 +2116,7 @@ function ajax3() {
                     value = value[0].replace(/(\d{1,3})(?=(?:\d{3})+(?!\d))/g, '$1,') +
                         '.' + value[1];
                     if (dict[params.name] != undefined)
-                        return params.name + '<br>Confirmed: ' + dict[params.name][0] + '<br>Infected: ' + (dict[params.name][0] - dict[params.name][1] - dict[params.name][2]) + '<br>Deaths: ' + dict[params.name][1] + '<br>Recovered: ' + dict[params.name][2];
+                        return params.name + '<br>Confirmed: ' + dict[params.name][0] + '<br>Infected: ' + (dict[params.name][0] - dict[params.name][2] - dict[params.name][3]) + '<br>Deaths: ' + dict[params.name][2] + '<br>Recovered: ' + dict[params.name][3];
                 }
             },
             visualMap: {
