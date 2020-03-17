@@ -164,7 +164,7 @@ function drawChartTimeseries() {
                 if (tempCountry != null) {
                     values[element][nowTimeH] = dict[tempCountry][element]
                     document.getElementById('confirmedNCountry').innerHTML = values[0][nowTimeH] + ' (+' + dict[tempCountry][4] + ')'
-                    document.getElementById('infectedNCountry').innerHTML = values[1][nowTimeH]
+                    document.getElementById('infectedNCountry').innerHTML = values[1][nowTimeH] + ' (!' + dict[tempCountry][6] + ')'
                     document.getElementById('deathsNCountry').innerHTML = values[2][nowTimeH] + ' (+' + dict[tempCountry][5] + ')'
                     document.getElementById('recoveredNCountry').innerHTML = values[3][nowTimeH]
                 } else {
@@ -176,7 +176,7 @@ function drawChartTimeseries() {
             } else {
                 values[element][nowTimeH] = dict[document.getElementById('dropdownCountry').value][element]
                 document.getElementById('confirmedNCountry').innerHTML = values[0][nowTimeH] + ' (+' + dict[document.getElementById('dropdownCountry').value][4] + ')'
-                document.getElementById('infectedNCountry').innerHTML = values[1][nowTimeH]
+                document.getElementById('infectedNCountry').innerHTML = values[1][nowTimeH] + ' (!' + dict[document.getElementById('dropdownCountry').value][6] + ')' 
                 document.getElementById('deathsNCountry').innerHTML = values[2][nowTimeH] + ' (+' + dict[document.getElementById('dropdownCountry').value][5] + ')'
                 document.getElementById('recoveredNCountry').innerHTML = values[3][nowTimeH]
             }
@@ -424,11 +424,12 @@ function ajax3() {
         data = $.parseJSON(data);
         for (country in data.countries_stat) {
             dict[data.countries_stat[country].country_name] = [parseInt(data.countries_stat[country].cases.replace(',', '')),
-                parseInt(data.countries_stat[country].serious_critical.replace(',', '')),
+                parseInt(data.countries_stat[country].cases.replace(',', '')) - parseInt(data.countries_stat[country].deaths.replace(',', '')) - parseInt(data.countries_stat[country].total_recovered.replace(',', '')),
                 parseInt(data.countries_stat[country].deaths.replace(',', '')),
                 parseInt(data.countries_stat[country].total_recovered.replace(',', '')),
                 parseInt(data.countries_stat[country].new_cases.replace(',', '')),
-                parseInt(data.countries_stat[country].new_deaths.replace(',', ''))
+                parseInt(data.countries_stat[country].new_deaths.replace(',', '')),
+                parseInt(data.countries_stat[country].serious_critical.replace(',', ''))
             ]
         }
         var latlong = {};
@@ -2195,7 +2196,7 @@ function ajax2() {
         data.total_cases = data.total_cases.replace(',', '')
         data.total_deaths = data.total_deaths.replace(',', '')
         data.total_recovered = data.total_recovered.replace(',', '')
-        document.getElementById('confirmedN').innerHTML = data.total_cases + ' (+' + data.new_cases.replace(',', '') + ')'
+        document.getElementById('confirmedN').innerHTML = data.total_cases
         document.getElementById('infectedN').innerHTML = parseInt(data.total_cases) - parseInt(data.total_deaths) - parseInt(data.total_recovered)
         document.getElementById('deathsN').innerHTML = data.total_deaths + ' (+' + data.new_deaths.replace(',', '') + ')'
         document.getElementById('recoveredN').innerHTML = data.total_recovered
